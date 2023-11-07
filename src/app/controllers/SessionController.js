@@ -15,10 +15,22 @@ class SessionController {
     })
     if (!(await schema.isValid(request.body))) userEmailOrPasswordIncorrect()
 
-    const { email } = request.body
+    const { email, password } = request.body
 
     const userExists = await User.findOne({ where: { email } })
     if (!userExists) userEmailOrPasswordIncorrect()
+
+    // validate password
+    if (!(await userExists.checkPassword(password))) {
+      return userEmailOrPasswordIncorrect()
+    }
+
+    return response.json({
+      id: userExists.id,
+      email,
+      name: userExists.name,
+      admin: userExists.admin,
+    })
   }
 }
 
