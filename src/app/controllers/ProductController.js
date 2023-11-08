@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 import Product from '../models/Product'
+import { Op } from 'sequelize'
 
 class ProductController {
   async store(request, response) {
@@ -18,17 +19,17 @@ class ProductController {
 
     const { filename: path } = request.file // capturing log filename
 
-    const ExistCategory = Product.findOne({
-      where: { category },
+    const existingProduct = await Product.findOne({
+      where: {
+        [Op.or]: [{ category }, { name }],
+      },
     })
-    if (!ExistCategory) {
-      return response.status(400).json({ error: 'Category already exists' })
-    }
-    const existName = Product.findOne({
-      where: { name },
-    })
-    if (!existName) {
-      return response.status(400).json({ error: 'Name already exists' })
+    if (existingProduct) {
+      if (existingProduct.category === category) {
+        return response.status(400).json({ error: 'Category already exists' })
+      } else {
+        return response.status(400).json({ error: 'Name already exists' })
+      }
     }
 
     const product = await Product.create({ name, price, category, path })
