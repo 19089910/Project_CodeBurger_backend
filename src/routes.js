@@ -14,5 +14,6 @@ router.post('/users', UserController.store)
 router.post('/sessions', SessionController.store)
 
 router.post('/products', uploads.single('file'), ProductController.store)
+router.get('/products', ProductController.index)
 
 export default router
