@@ -9,13 +9,13 @@ class ProductController {
       category: Yup.string().required(),
     })
     try {
-      await schema.validateSync(request.body)
+      await schema.validateSync(request.body, { abortEarly: false })
     } catch (err) {
-      console.log('entrou')
       return response.status(400).json({ error: err.error })
     }
 
     const { name, price, category } = request.body
+
     const { filename: path } = request.file // capturndo log de filename
 
     const ExistCategory = Product.findOne({
@@ -24,10 +24,16 @@ class ProductController {
     if (!ExistCategory) {
       return response.status(400).json({ error: 'Category already exists' })
     }
+    const existName = Product.findOne({
+      where: { name },
+    })
+    if (!existName) {
+      return response.status(400).json({ error: 'Name already exists' })
+    }
 
-    const product = await Product.create(name, price, category, path)
+    const product = await Product.create({ name, price, category, path })
 
-    return response.json({ product })
+    return response.json(product)
   }
 }
 
