@@ -19,7 +19,9 @@ class UserController {
 
     const { name, email, password, admin } = request.body
 
-    const userExists = await User.findOne({ where: { email } })
+    const userExists = await User.findOne({
+      where: { email },
+    })
     if (userExists) {
       return response.status(400).json({ error: 'User already existe' })
     }

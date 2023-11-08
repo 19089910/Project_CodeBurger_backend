@@ -17,7 +17,9 @@ class SessionController {
 
     const { email, password } = request.body
 
-    const userExists = await User.findOne({ where: { email } })
+    const userExists = await User.findOne({
+      where: { email },
+    })
     if (!userExists) userEmailOrPasswordIncorrect()
 
     if (!(await userExists.checkPassword(password))) {

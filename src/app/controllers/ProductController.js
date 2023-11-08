@@ -1,4 +1,5 @@
 import * as Yup from 'yup'
+import Product from '../models/Product'
 
 class ProductController {
   async store(request, response) {
@@ -14,7 +15,19 @@ class ProductController {
       return response.status(400).json({ error: err.error })
     }
 
-    return response.json({ ok: true })
+    const { name, price, category } = request.body
+    const { filename: path } = request.file // capturndo log de filename
+
+    const ExistCategory = Product.findOne({
+      where: { category },
+    })
+    if (!ExistCategory) {
+      return response.status(400).json({ error: 'Category already exists' })
+    }
+
+    const product = await Product.create(name, price, category, path)
+
+    return response.json({ product })
   }
 }
 
