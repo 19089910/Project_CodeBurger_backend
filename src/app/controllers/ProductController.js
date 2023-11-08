@@ -16,7 +16,7 @@ class ProductController {
 
     const { name, price, category } = request.body
 
-    const { filename: path } = request.file // capturndo log de filename
+    const { filename: path } = request.file // capturing log filename
 
     const ExistCategory = Product.findOne({
       where: { category },
