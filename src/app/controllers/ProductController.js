@@ -1,13 +1,12 @@
 import * as Yup from 'yup'
 import Product from '../models/Product'
-import { Op } from 'sequelize'
 
 class ProductController {
   async store(request, response) {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       price: Yup.number().required(),
-      category: Yup.string().required(),
+      category_id: Yup.number().required(),
     })
     try {
       await schema.validateSync(request.body, { abortEarly: false })
@@ -15,23 +14,17 @@ class ProductController {
       return response.status(400).json({ error: err.error })
     }
 
-    const { name, price, category } = request.body
+    const { name, price, category_id } = request.body
     const { filename: path } = request.file // capturing log filename
 
-    const existingProduct = await Product.findOne({
-      where: {
-        [Op.or]: [{ category }, { name }],
-      },
+    const productExists = await Product.findOne({
+      where: { name },
     })
-    if (existingProduct) {
-      if (existingProduct.category === category) {
-        return response.status(400).json({ error: 'Category already exists' })
-      } else {
-        return response.status(400).json({ error: 'Product already exists' })
-      }
+    if (!productExists) {
+      return response.status(400).json({ error: 'Product already exists' })
     }
 
-    const product = await Product.create({ name, price, category, path })
+    const product = await Product.create({ name, price, category_id, path })
 
     return response.json(product)
   }

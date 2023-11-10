@@ -14,11 +14,11 @@ class CategoryController {
 
     const { name } = request.body
 
-    const existCategory = Category.findOne({
+    const categoryExist = Category.findOne({
       where: { name },
     })
-    if (!existCategory) {
-      return response.status(400).json({ error: 'category already exist' })
+    if (!categoryExist) {
+      return response.status(400).json({ error: 'Category already exist' })
     }
 
     const { id } = Category.create({ name })
