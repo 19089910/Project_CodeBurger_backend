@@ -9,15 +9,15 @@ class CategoryController {
     try {
       await schema.validateSync(request.body, { abortEarly: false })
     } catch (err) {
-      return response.status(400).json({ error: err.error })
+      return response.status(400).json({ error: err.errors })
     }
 
     const { name } = request.body
 
-    const categoryExist = Category.findOne({
+    const categoryExist = await Category.findOne({
       where: { name },
     })
-    if (!categoryExist) {
+    if (categoryExist) {
       return response.status(400).json({ error: 'Category already exist' })
     }
 

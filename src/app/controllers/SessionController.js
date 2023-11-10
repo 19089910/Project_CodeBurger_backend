@@ -6,8 +6,8 @@ import authConfig from '../../config/auth'
 class SessionController {
   async store(request, response) {
     const userEmailOrPasswordIncorrect = () => {
-      return response
-        .status(400)
+      response
+        .status(401)
         .json({ error: 'Make sure yor email or password are correct' })
     }
 
@@ -15,14 +15,18 @@ class SessionController {
       email: Yup.string().required(),
       password: Yup.string().required(),
     })
-    if (!(await schema.isValid(request.body))) userEmailOrPasswordIncorrect()
+    if (!(await schema.isValid(request.body))) {
+      return userEmailOrPasswordIncorrect()
+    }
 
     const { email, password } = request.body
 
     const userExists = await User.findOne({
       where: { email },
     })
-    if (!userExists) userEmailOrPasswordIncorrect()
+    if (!userExists) {
+      return userEmailOrPasswordIncorrect()
+    }
 
     if (!(await userExists.checkPassword(password))) {
       return userEmailOrPasswordIncorrect()

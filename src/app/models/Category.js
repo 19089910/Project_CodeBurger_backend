@@ -6,7 +6,7 @@ class Category extends Model {
       {
         name: Sequelize.STRING,
       },
-      { Sequelize },
+      { sequelize },
     )
     return this // return calss Product to stop here when it needs to and not call associate out of time, product.js also needs to
   }

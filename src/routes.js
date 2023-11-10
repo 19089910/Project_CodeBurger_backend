@@ -21,6 +21,6 @@ router.use(authMiddleware) // routes below need to send the token using the head
 router.post('/products', uploads.single('file'), ProductController.store)
 router.get('/products', ProductController.index)
 
-router.post('/category', CategoryController.store)
+router.post('/categories', CategoryController.store)
 
 export default router

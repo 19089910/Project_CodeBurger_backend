@@ -12,7 +12,7 @@ class ProductController {
     try {
       await schema.validateSync(request.body, { abortEarly: false })
     } catch (err) {
-      return response.status(400).json({ error: err.error })
+      return response.status(400).json({ error: err.errors })
     }
 
     const { name, price, category_id } = request.body
@@ -21,7 +21,7 @@ class ProductController {
     const productExists = await Product.findOne({
       where: { name },
     })
-    if (!productExists) {
+    if (productExists) {
       return response.status(400).json({ error: 'Product already exists' })
     }
 

@@ -22,7 +22,7 @@ class Product extends Model {
   // new method that will make the relationship
   static associate(models) {
     // creating a new associated column in the product
-    this.belongsTo(models.category, {
+    this.belongsTo(models.Category, {
       foreignKey: 'category_id',
       as: 'category',
     })
