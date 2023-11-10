@@ -16,7 +16,6 @@ class ProductController {
     }
 
     const { name, price, category } = request.body
-
     const { filename: path } = request.file // capturing log filename
 
     const existingProduct = await Product.findOne({
@@ -28,7 +27,7 @@ class ProductController {
       if (existingProduct.category === category) {
         return response.status(400).json({ error: 'Category already exists' })
       } else {
-        return response.status(400).json({ error: 'Name already exists' })
+        return response.status(400).json({ error: 'Product already exists' })
       }
     }
 
