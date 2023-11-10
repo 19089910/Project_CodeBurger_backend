@@ -22,5 +22,6 @@ router.post('/products', uploads.single('file'), ProductController.store)
 router.get('/products', ProductController.index)
 
 router.post('/categories', CategoryController.store)
+router.get('/categories', CategoryController.index)
 
 export default router

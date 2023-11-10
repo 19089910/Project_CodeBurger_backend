@@ -12,7 +12,8 @@ class ProductController {
     try {
       await schema.validateSync(request.body, { abortEarly: false })
     } catch (err) {
-      return response.status(400).json({ error: err.errors })
+      const validationErrors = err.errors || err.inner.map((e) => e.message)
+      return response.status(400).json({ error: validationErrors })
     }
 
     const { name, price, category_id } = request.body

@@ -9,7 +9,8 @@ class CategoryController {
     try {
       await schema.validateSync(request.body, { abortEarly: false })
     } catch (err) {
-      return response.status(400).json({ error: err.errors })
+      const validationErrors = err.errors || err.inner.map((e) => e.message)
+      return response.status(400).json({ error: validationErrors })
     }
 
     const { name } = request.body
@@ -24,6 +25,11 @@ class CategoryController {
     const { id } = Category.create({ name })
 
     response.status(200).json({ id, name })
+  }
+
+  async index(request, response) {
+    const categories = await Category.findAll()
+    return response.status(200).json({ categories })
   }
 }
 
