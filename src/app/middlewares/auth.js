@@ -15,12 +15,14 @@ export default (request, response, next) => {
   try {
     jwt.verify(token, authConfig.secret, (err, decoded) => {
       if (err) throw new Error()
+
       console.log(decoded)
       request.userId = decoded.id
+      request.UserName = decoded.name
+
+      return next()
     })
   } catch (err) {
     return response.status(401).json({ error: 'Token is invalid' })
   }
-
-  next()
 }
