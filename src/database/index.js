@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize'
 import configDatabase from '../config/database'
+import mongoose from 'mongoose'
 
 import User from '../app/models/User'
 import Product from '../app/models/Product'
@@ -16,6 +17,16 @@ class Database {
     models
       .map((model) => model.init(this.conection))
       .map((model) => model.associate && model.associate(this.conection.models))
+  }
+
+  mongo() {
+    this.mongoConntion = mongoose.connect(
+      'mongodb://localhost:27017/codeburger',
+      {
+        userNewUrlParser: true,
+        userUnifiedTopoLogy: true,
+      },
+    )
   }
 }
 
