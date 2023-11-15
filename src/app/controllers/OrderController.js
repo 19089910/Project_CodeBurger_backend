@@ -34,14 +34,17 @@ class OrdeController {
       ],
     })
     // modeling product data
-    const editrdProducts = updateProducts.map((product) => {
+    const editedProducts = updateProducts.map((product) => {
+      const produtIndex = request.body.product.findIndex(
+        (requestProduct) => requestProduct.id === product.id,
+      )
       const newProduct = {
         id: product.id,
         name: product.name,
         price: product.price,
         Category: product.Category.name,
         url: product.url,
-        // the quantity is missing here, but it comes from request.body
+        quantity: request.body.product[produtIndex].quantity,
       }
       return newProduct
     })
@@ -52,7 +55,7 @@ class OrdeController {
         id: request.userId,
         name: request.userName,
       },
-      product: editrdProducts,
+      product: editedProducts,
       // only the "status" are missing here.
     }
 
