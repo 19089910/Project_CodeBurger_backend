@@ -1,6 +1,7 @@
 import * as Yup from 'yup'
 import Product from '../models/Product'
 import Category from '../models/Category'
+import Order from '../schemas/Order'
 
 class OrdeController {
   async store(request, response) {
@@ -57,10 +58,12 @@ class OrdeController {
         name: request.userName,
       },
       product: editedProducts,
-      // only the "status" are missing here.
+      status: 'pedido realizado',
     }
 
-    return response.status(200).json(order)
+    const orderResponse = await Order.create(order)
+
+    return response.status(200).json(orderResponse)
   }
 }
 
