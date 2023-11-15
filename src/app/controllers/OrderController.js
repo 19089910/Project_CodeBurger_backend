@@ -33,6 +33,7 @@ class OrdeController {
         },
       ],
     })
+
     // modeling product data
     const editedProducts = updateProducts.map((product) => {
       const produtIndex = request.body.product.findIndex(
