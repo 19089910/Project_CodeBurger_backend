@@ -6,7 +6,7 @@ import Order from '../schemas/Order'
 class OrdeController {
   async store(request, response) {
     const schema = Yup.object().shape({
-      protucts: Yup.array()
+      products: Yup.array()
         .required()
         .of(
           Yup.object().shape({
@@ -23,9 +23,9 @@ class OrdeController {
     }
 
     // let's just take the product id's to: findAll in the bank and get the product information
-    const protuctsId = request.body.Product.map((product) => product.id)
+    const prductsId = request.body.products.map((product) => product.id)
     const updateProducts = await Product.findAll({
-      where: { id: protuctsId },
+      where: { id: prductsId },
       include: [
         {
           model: Category,
@@ -37,16 +37,16 @@ class OrdeController {
 
     // modeling product data
     const editedProducts = updateProducts.map((product) => {
-      const produtIndex = request.body.product.findIndex(
+      const produtIndex = request.body.products.findIndex(
         (requestProduct) => requestProduct.id === product.id,
       )
       const newProduct = {
         id: product.id,
         name: product.name,
         price: product.price,
-        Category: product.Category.name,
+        category: product.category.name,
         url: product.url,
-        quantity: request.body.product[produtIndex].quantity,
+        quantity: request.body.products[produtIndex].quantity,
       }
       return newProduct
     })
@@ -57,9 +57,10 @@ class OrdeController {
         id: request.userId,
         name: request.userName,
       },
-      product: editedProducts,
+      products: editedProducts,
       status: 'pedido realizado',
     }
+    console.log(order)
 
     const orderResponse = await Order.create(order)
 

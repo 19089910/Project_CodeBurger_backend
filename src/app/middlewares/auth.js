@@ -18,7 +18,7 @@ export default (request, response, next) => {
 
       console.log(decoded)
       request.userId = decoded.id
-      request.UserName = decoded.name
+      request.userName = decoded.name
 
       return next()
     })

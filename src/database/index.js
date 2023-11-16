@@ -10,6 +10,7 @@ const models = [User, Product, Category]
 class Database {
   constructor() {
     this.init()
+    this.mongo()
   }
 
   init() {
@@ -22,10 +23,6 @@ class Database {
   mongo() {
     this.mongoConntion = mongoose.connect(
       'mongodb://localhost:27017/codeburger',
-      {
-        userNewUrlParser: true,
-        userUnifiedTopoLogy: true,
-      },
     )
   }
 }
