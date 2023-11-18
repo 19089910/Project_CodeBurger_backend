@@ -65,6 +65,34 @@ class OrdeController {
 
     return response.status(200).json(orderResponse)
   }
+
+  async index(request, response) {
+    const orders = await Order.find()
+    return response.status(200).json({ orders })
+  }
+
+  async update(request, response) {
+    const schema = Yup.object().shape({
+      status: Yup.string().required(),
+    })
+    try {
+      await schema.validateSync(request.body, { abortEarly: false })
+    } catch (err) {
+      const validationErrors = err.errors || err.inner.map((e) => e.message)
+      return response.status(400).json({ error: validationErrors })
+    }
+    const { id } = request.params
+    const { status } = request.body
+
+    // if send the wrong id
+    try {
+      await Order.updateOne({ _id: id }, { status })
+    } catch (err) {
+      const validationErrors = err.errors || err.inner.map((e) => e.message)
+      return response.status(400).json({ error: validationErrors })
+    }
+    return response.json({ message: 'Status updated sucessfully' })
+  }
 }
 
 export default new OrdeController()
