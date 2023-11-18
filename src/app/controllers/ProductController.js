@@ -51,6 +51,47 @@ class ProductController {
     })
     return response.status(200).json({ products })
   }
+
+  async update(request, response) {
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      price: Yup.number(),
+      Category_id: Yup.number(),
+      offer: Yup.boolean(),
+    })
+    try {
+      await schema.validateSync(request.body, { abortEarly: false })
+    } catch (err) {
+      const validationErrors = err.errors || err.inner.map((e) => e.message)
+      return response.status(400).json({ error: validationErrors })
+    }
+
+    // admin validate
+    const { admin: isAdmin } = await User.findByPk(request.userId)
+    if (!isAdmin) return response.status(401).json()
+
+    const { id } = request.params
+    const productExists = await Product.findByPk(id)
+    if (!productExists)
+      return response
+        .status(400)
+        .json({ error: 'Make sure your product ID is corret' })
+
+    let path // it won't be every time that the adm will want to change the image
+    if (request.file) path = request.file.filename // cosnt{ filename: path } = request.file;
+    const { name, price, category_id, offer } = request.body
+    await Product.update(
+      {
+        name,
+        price,
+        category_id,
+        path,
+        offer,
+      },
+      { where: { id } },
+    )
+    return response.status(200).json()
+  }
 }
 
 export default new ProductController()
