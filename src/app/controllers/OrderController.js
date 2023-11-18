@@ -60,7 +60,6 @@ class OrdeController {
       products: editedProducts,
       status: 'pedido realizado',
     }
-    console.log(order)
 
     const orderResponse = await Order.create(order)
 
