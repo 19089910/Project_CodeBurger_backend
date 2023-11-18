@@ -2,6 +2,7 @@ import * as Yup from 'yup'
 import Product from '../models/Product'
 import Category from '../models/Category'
 import Order from '../schemas/Order'
+import User from '../models/User'
 
 class OrdeController {
   async store(request, response) {
@@ -81,6 +82,11 @@ class OrdeController {
       const validationErrors = err.errors || err.inner.map((e) => e.message)
       return response.status(400).json({ error: validationErrors })
     }
+
+    // admin validate
+    const { admin: isAdmin } = await User.findByPk(request.userId)
+    if (!isAdmin) return response.status(401).json()
+
     const { id } = request.params
     const { status } = request.body
 

@@ -1,5 +1,6 @@
 import * as Yup from 'yup'
 import Category from '../models/Category'
+import User from '../models/User'
 
 class CategoryController {
   async store(request, response) {
@@ -12,6 +13,10 @@ class CategoryController {
       const validationErrors = err.errors || err.inner.map((e) => e.message)
       return response.status(400).json({ error: validationErrors })
     }
+
+    // admin validate
+    const { admin: isAdmin } = await User.findByPk(request.userId)
+    if (!isAdmin) return response.status(401).json()
 
     const { name } = request.body
 
