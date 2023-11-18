@@ -9,6 +9,7 @@ class ProductController {
       name: Yup.string().required(),
       price: Yup.number().required(),
       category_id: Yup.number().required(),
+      offer: Yup.boolean(),
     })
     try {
       await schema.validateSync(request.body, { abortEarly: false })
@@ -21,7 +22,7 @@ class ProductController {
     const { admin: isAdmin } = await User.findByPk(request.userId)
     if (!isAdmin) return response.status(401).json()
 
-    const { name, price, category_id } = request.body
+    const { name, price, category_id, offer } = request.body
     const { filename: path } = request.file // capturing log filename
 
     const productExists = await Product.findOne({
@@ -31,9 +32,15 @@ class ProductController {
       return response.status(400).json({ error: 'Product already exists' })
     }
 
-    const product = await Product.create({ name, price, category_id, path })
+    const product = await Product.create({
+      name,
+      price,
+      category_id,
+      path,
+      offer,
+    })
 
-    return response.json(product)
+    return response.json({ product })
   }
 
   async index(request, response) {
