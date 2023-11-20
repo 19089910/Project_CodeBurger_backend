@@ -19,6 +19,7 @@ class CategoryController {
     if (!isAdmin) return response.status(401).json()
 
     const { name } = request.body
+    const { filename: path } = request.file // capturing log filename
 
     const categoryExist = await Category.findOne({
       where: { name },
@@ -27,7 +28,7 @@ class CategoryController {
       return response.status(400).json({ error: 'Category already exist' })
     }
 
-    const { id } = Category.create({ name })
+    const { id } = await Category.create({ name, path })
 
     response.status(200).json({ id, name })
   }
