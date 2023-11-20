@@ -72,10 +72,11 @@ class ProductController {
 
     const { id } = request.params
     const productExists = await Product.findByPk(id)
-    if (!productExists)
+    if (!productExists) {
       return response
         .status(400)
         .json({ error: 'Make sure your product ID is corret' })
+    }
 
     let path // it won't be every time that the adm will want to change the image
     if (request.file) path = request.file.filename // cosnt{ filename: path } = request.file;
