@@ -74,7 +74,7 @@ class ProductController {
     const productExists = await Product.findByPk(id)
     if (!productExists) {
       return response
-        .status(400)
+        .status(409)
         .json({ error: 'Make sure your product ID is corret' })
     }
 
