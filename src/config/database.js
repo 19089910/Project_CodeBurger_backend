@@ -1,11 +1,21 @@
 module.exports = {
   dialect: 'postgres',
-  host: 'localhost',
+  /**
+   * host: 'localhost',
+   * username: 'postgres',
+   * password: '19089910',
+   * database: 'codeburger',
+   *
+   * postgresql://postgres:mEMOTEAFYKxGFlAxMKShvCKRzECKVPEW@junction.proxy.rlwy.net:26036/railway
+   * */
+
+  host: 'junction.proxy.rlwy.net',
+  port: 26036,
   username: 'postgres',
-  password: '19089910',
-  database: 'codeburger',
+  password: 'mEMOTEAFYKxGFlAxMKShvCKRzECKVPEW',
+  database: 'railway',
   define: {
-    timespamps: true,
+    timestamps: true,
     underscored: true,
     underscoreAll: true,
   },

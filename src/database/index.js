@@ -22,7 +22,8 @@ class Database {
 
   mongo() {
     this.mongoConntion = mongoose.connect(
-      'mongodb://localhost:27017/codeburger',
+      'mongodb://mongo:GOOYwYmrSfEQSRRkIuqaBCMkNGBxEwNS@autorack.proxy.rlwy.net:49546',
+      // 'mongodb://localhost:27017/codeburger',
     )
   }
 }
