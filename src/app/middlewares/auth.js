@@ -16,7 +16,7 @@ export default (request, response, next) => {
     jwt.verify(token, authConfig.secret, (err, decoded) => {
       if (err) throw new Error()
 
-      console.log(decoded)
+      // console.log(decoded)
       request.userId = decoded.id
       request.userName = decoded.name
 
