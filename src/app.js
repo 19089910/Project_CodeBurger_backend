@@ -4,16 +4,17 @@ import { resolve } from 'path'
 import cors from 'cors'
 
 import './database'
-
+/** 
 const corsOpitons = {
   origin: 'https://project-code-burger-frontend.vercel.app',
   credentials: true,
 }
+ */
 
 class App {
   constructor() {
     this.app = express()
-    this.app.use(cors(corsOpitons))
+    this.app.use(cors())
     this.middlewares()
     this.routes()
   }
