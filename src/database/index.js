@@ -22,7 +22,7 @@ class Database {
 
   mongo() {
     this.mongoConntion = mongoose.connect(
-      'mongodb://mongo:kXJZECmKzTzLbSmUPxaKwvkqQmizYpnD@junction.proxy.rlwy.net:10990',
+      'mongodb://mongo:chgFupPITnUzUArPaUuarDQoYHPOtdcW@switchyard.proxy.rlwy.net:29979/?connectTimeoutMS=30000&socketTimeoutMS=45000',
       // 'mongodb://localhost:27017/codeburger',
     )
   }
